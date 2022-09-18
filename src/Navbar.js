@@ -4,13 +4,19 @@ import Facebook from './assets/social-media-icons/facebook_32x32.png'
 import Twitter from './assets/social-media-icons/twitter_32x32.png'
 import Email from './assets/social-media-icons/email_32x32.png'
 import { Button } from '@chakra-ui/react'
+import { ethers } from "ethers";
 
 const Navbar = ({ accounts, setAccounts }) => {
   const isConnected = Boolean(accounts[0]);
 
-  // TODO: 連接錢包
+  //  連接錢包
   async function connectAccount() {
-
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    setAccounts(await provider.send("eth_requestAccounts", []))
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: '0x5' }],
+    })
   }
 
   return (
